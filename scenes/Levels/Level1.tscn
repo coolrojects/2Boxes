@@ -1,12 +1,37 @@
-[gd_scene load_steps=3 format=3 uid="uid://plaeip4s055y"]
+[gd_scene load_steps=6 format=3 uid="uid://deq2nvbh6j0kd"]
 
 [ext_resource type="PackedScene" uid="uid://dsn3a8fhjkb1o" path="res://scenes/ground.tscn" id="2_4awly"]
-[ext_resource type="PackedScene" uid="uid://cy2lp8ttb34km" path="res://scenes/player.tscn" id="2_8ysjh"]
+[ext_resource type="PackedScene" uid="uid://0evij1asx84r" path="res://scenes/Player.tscn" id="2_8ysjh"]
+[ext_resource type="Script" path="res://scripts/myPlayer.cs" id="3_soagh"]
+[ext_resource type="PackedScene" uid="uid://cry8apaavtffg" path="res://scenes/smallBricks.tscn" id="3_xcrje"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_td023"]
+size = Vector2(64, 64)
 
 [node name="Level1" type="Node"]
 
-[node name="StaticBody2D" parent="." instance=ExtResource("2_4awly")]
-position = Vector2(-2, 5)
+[node name="player" parent="." groups=["walls"] instance=ExtResource("2_8ysjh")]
+unique_name_in_owner = true
+position = Vector2(472, 430)
+collision_mask = 3
+script = ExtResource("3_soagh")
+gravity = 4000.0
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("2_8ysjh")]
-position = Vector2(449, 457)
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="player"]
+position = Vector2(-8, 0)
+shape = SubResource("RectangleShape2D_td023")
+
+[node name="StaticBody2D" parent="." instance=ExtResource("3_xcrje")]
+position = Vector2(776, 480)
+
+[node name="StaticBody2D2" parent="." instance=ExtResource("3_xcrje")]
+position = Vector2(456, 480)
+
+[node name="StaticBody2D3" parent="." instance=ExtResource("3_xcrje")]
+position = Vector2(184, 376)
+
+[node name="StaticBody2D4" parent="." instance=ExtResource("3_xcrje")]
+position = Vector2(600, 280)
+
+[node name="StaticBody2D5" parent="." instance=ExtResource("2_4awly")]
+position = Vector2(568, 632)
