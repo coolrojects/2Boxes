@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cry8apaavtffg"]
+[gd_scene load_steps=6 format=3 uid="uid://cry8apaavtffg"]
 
 [ext_resource type="Texture2D" uid="uid://2bkvqyj85fda" path="res://icon.svg" id="1_0a755"]
+[ext_resource type="Script" path="res://scripts/wallsScript.cs" id="1_ei4s3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_crwbm"]
 size = Vector2(147, 35)
@@ -16,8 +17,12 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a6na7"]
+size = Vector2(144, 3)
+
 [node name="StaticBody2D" type="StaticBody2D" groups=["player"]]
 collision_layer = 2
+script = ExtResource("1_ei4s3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_crwbm")
@@ -25,3 +30,19 @@ shape = SubResource("RectangleShape2D_crwbm")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.14063, 0.28125)
 sprite_frames = SubResource("SpriteFrames_jc16m")
+
+[node name="wall" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="wall"]
+position = Vector2(0, -17.5)
+shape = SubResource("RectangleShape2D_a6na7")
+
+[node name="bottom" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bottom"]
+position = Vector2(0, 18)
+shape = SubResource("RectangleShape2D_a6na7")

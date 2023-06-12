@@ -1,25 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://deq2nvbh6j0kd"]
+[gd_scene load_steps=5 format=3 uid="uid://deq2nvbh6j0kd"]
 
 [ext_resource type="PackedScene" uid="uid://dsn3a8fhjkb1o" path="res://scenes/ground.tscn" id="2_4awly"]
 [ext_resource type="PackedScene" uid="uid://0evij1asx84r" path="res://scenes/Player.tscn" id="2_8ysjh"]
 [ext_resource type="Script" path="res://scripts/myPlayer.cs" id="3_soagh"]
 [ext_resource type="PackedScene" uid="uid://cry8apaavtffg" path="res://scenes/smallBricks.tscn" id="3_xcrje"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_td023"]
-size = Vector2(64, 64)
-
 [node name="Level1" type="Node"]
 
 [node name="player" parent="." groups=["walls"] instance=ExtResource("2_8ysjh")]
 unique_name_in_owner = true
-position = Vector2(472, 430)
-collision_mask = 3
+position = Vector2(528, 462)
 script = ExtResource("3_soagh")
-gravity = 4000.0
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="player"]
-position = Vector2(-8, 0)
-shape = SubResource("RectangleShape2D_td023")
 
 [node name="StaticBody2D" parent="." instance=ExtResource("3_xcrje")]
 position = Vector2(776, 480)
@@ -35,3 +26,14 @@ position = Vector2(600, 280)
 
 [node name="StaticBody2D5" parent="." instance=ExtResource("2_4awly")]
 position = Vector2(568, 632)
+
+[node name="player2" parent="." instance=ExtResource("2_8ysjh")]
+position = Vector2(680, 584)
+
+[connection signal="area_entered" from="player/player Area" to="player" method="characterEnteredJumpArea"]
+[connection signal="area_exited" from="player/player Area" to="player" method="playerIsNotOnWall"]
+[connection signal="area_entered" from="player2/player Area" to="player2" method="characterEnteredJumpArea"]
+[connection signal="area_exited" from="player2/player Area" to="player2" method="playerIsNotOnWall"]
+
+[editable path="player"]
+[editable path="player2"]
