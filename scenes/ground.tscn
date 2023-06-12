@@ -17,12 +17,12 @@ animations = [{
 }]
 
 [node name="StaticBody2D" type="StaticBody2D"]
+collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(575, 575)
 shape = SubResource("RectangleShape2D_7relr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(575, 577.5)
+position = Vector2(6.10352e-05, 3.05176e-05)
 scale = Vector2(9.02344, 0.179688)
 sprite_frames = SubResource("SpriteFrames_l12ol")

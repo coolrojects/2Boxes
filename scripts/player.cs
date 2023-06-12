@@ -2,33 +2,62 @@ using Godot;
 using System;
 using System.Threading;
 
-public partial class player : CharacterBody2D
+public partial class Player : CharacterBody2D
 {
-	int speed = 400;
-    int gravity = 26000;
-    float force = 500;
+    [Export] float jumpHeight, jumpTimeToPeak, jumpTimeToDecend;
+
+    float jumpVelocity, jumpGravity, fallGravity;
+
+    private int speed = 400, mass = 20;
+    public String name;
     //it is the value of how much distance will the player be moved per second
-    const float JUMP_FORCE = 3000;
-	Vector2 myVelocity = Vector2.Zero;
-	Vector2 playerPos = Vector2.Zero;
+    const float JUMP_FORCE = 200, jumpSpeed = 200;
+    float force, gravity = 200;
+	public Vector2 myVelocity = Vector2.Zero;
+	Vector2 jumpStartPos = Vector2.Zero;
     bool canJump = true, reachedJumpHeight = false;
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+    Vector2 moveDirection;
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
 	{
 		speed = 400;
-        playerPos = Position;
+        jumpStartPos = Position;
+        //myVelocity.Y = gravity;
+
+        jumpVelocity = ((2.0f * jumpHeight) / jumpTimeToPeak) * -1.0f;
+        jumpGravity = ((-2.0f * jumpHeight) / jumpTimeToPeak * jumpTimeToPeak) * -1.0f;
+        fallGravity = ((-2.0f * jumpHeight) / jumpTimeToDecend * jumpTimeToDecend) * -1.0f;
+        GD.Print(fallGravity);
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+	public  float getGravity()
 	{
-				
+        if(Velocity.Y < 0.0)
+        {
+            return jumpGravity;
+        }
+        return fallGravity;
 	}
 
-    public override void _PhysicsProcess(double delta)
+    private void jump(float delta)
     {
-        Vector2 moveDirection = Vector2.Zero;
-        if (Input.IsPhysicalKeyPressed(Key.A) )
+        // if space is pressed then keep moving up till there is no more force to push youif( up
+        if (Input.IsActionJustPressed("Jump"))
+        {
+            force = JUMP_FORCE;
+            canJump = false;
+            myVelocity.Y = jumpVelocity;
+        }
+    
+       
+    }
+
+
+    private void movement()
+    {
+        moveDirection = Vector2.Zero;
+        if (Input.IsPhysicalKeyPressed(Key.A))
         {
             moveDirection.X = -1;
         }
@@ -36,35 +65,30 @@ public partial class player : CharacterBody2D
         {
             moveDirection.X = 1;
         }
-        // if space is pressed then keep moving up till there is no more force to push youif( up
-        if (Input.IsActionJustPressed("Jump") && canJump)
-        {
-            GD.Print(gravity * (float)delta);
-            force = JUMP_FORCE;
-            moveDirection.Y = -1 * force;
-            playerPos = Position;
-            canJump = false;
-            
-        }
-        else if(!canJump)
-        {
-            moveDirection.Y = -1 * force;
-            //Decrease the amount of distance the force can move
-            force -= gravity * (float)delta;
-
-        }
-        else if (canJump)
-        {
-            moveDirection.Y += gravity * (float)delta;
-        }
         moveDirection.X *= speed;
-		myVelocity = moveDirection;
-		Velocity = myVelocity;
+        myVelocity.X = moveDirection.X;
+    }
+    public void move()
+    {
+        Velocity = myVelocity;
         MoveAndSlide();
-        if((int)Position.Y >= (int)playerPos.Y)
-        {
-            canJump = true;
-        }
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        myVelocity.Y += getGravity() * (float)(delta);
+        movement();
+        jump((float)delta);
+        move();
+    }
+
+    public void applyGravity()
+    {
+
+    }
+    public int getMass()
+    {
+        return this.mass;
     }
 
 }
