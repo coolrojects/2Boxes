@@ -53,12 +53,12 @@ public partial class myPlayer : CharacterBody2D
     /// </param>
     void controlGravity(bool jump, float delta)
     {
-        
-        if(jump)
+
+        if (jump)
         {
             myVelocity.Y -= force;
         }
-        else if(bumpedWithaWallonTop)
+        else if (bumpedWithaWallonTop)
         {
             bumpedWithaWallonTop = false;
             myVelocity.Y = 0;
@@ -70,6 +70,7 @@ public partial class myPlayer : CharacterBody2D
         else
         {
             myVelocity.Y += gravity * delta;
+
         }
     }
 
